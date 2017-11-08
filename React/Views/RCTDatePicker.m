@@ -34,7 +34,10 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 - (void)didChange
 {
   if (_onChange) {
-    _onChange(@{ @"timestamp": @(self.date.timeIntervalSince1970 * 1000.0) });
+    __weak __typeof__(self) weakSelf = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
+      _onChange(@{ @"timestamp": @(weakSelf.date.timeIntervalSince1970 * 1000.0)});
+    });
   }
 }
 
